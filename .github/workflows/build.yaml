@@ -21,19 +21,47 @@ jobs:
       shell: bash
       run: |
         echo "::set-output name=sha_short::$(git rev-parse --short $GITHUB_SHA)"
+    - name: Export Client Curse Pack
+      shell: bash
+      run: |
+        chmod +x ./packwiz
+        ./packwiz curseforge export -o client.zip
+        ./packwiz list > modlist.txt
+        mkdir -p ./buildOut/
+        mv ./modlist.txt ./buildOut/
+        mv ./client.zip ./buildOut/
+    - name: Bootstrap
+      uses: actions/setup-java@v4
+      with:
+        distribution: 'zulu'
+        java-version: '8'
     - name: Install requests
       run: |
-       pip install requests
-    - uses: actions/setup-java@v2
-      with:
-        distribution: 'adopt' # See 'Supported distributions' for available options
-        java-version: '8'
-    - run: java -version
-    - name: Run Build
+        pip install requests
+    - run: python build/download.py
+    - name: Download
+      shell: bash
       run: |
-        python build/main.py
-      env:
-        CFAPIKEY: ${{ secrets.CFAPIKEY }}
+        serverPack="server.zip"
+        cp LICENSE build/server/
+          
+        cd build/server
+        java -jar packwiz-installer-bootstrap.jar ../../pack.toml
+          
+        zip -r $serverPack config
+        zip -r $serverPack groovy
+        zip -r $serverPack libraries
+        zip -r $serverPack mods
+        zip -r $serverPack structures
+          
+        zip -m $serverPack launch.sh
+        zip -m $serverPack forge-1.12.2-14.23.5.2860.jar
+        zip -m $serverPack LICENSE
+        zip -m $serverPack minecraft_server.1.12.2.jar
+          
+        cd ../..
+          
+        mv build/server/$serverPack buildOut/$serverPack
     - name: Automatic Releases
       uses: marvinpinto/action-automatic-releases@latest
       with:
@@ -44,5 +72,5 @@ jobs:
           files: |
             buildOut/client.zip
             buildOut/server.zip
-            buildOut/modlist.html
+            buildOut/modlist.txt
 
