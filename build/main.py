@@ -9,11 +9,9 @@ import shutil
 import subprocess
 import zipfile
 
-import requests
-
 # Used to run questbook.py
 import questbook
-
+import instance
 import download
 
 # used to map a projects classId on curseforge to a folder
@@ -37,6 +35,8 @@ def parse_args():
                         help="makes a folder with all the files symlinked for development. probally only works on linux")
     parser.add_argument("-c", "--client", action="store_true",
                         help="only builds the client pack")
+    parser.add_argument("-i", "--instance", action="store_true",
+                        help="generate Prism(MMC) instance")
     parser.add_argument("--prefix",
                         type=str,
                         default="susy",
@@ -72,11 +72,16 @@ def build(args):
     refresh()
     export_client_pack() # Client
 
+    if args.instance:
+        gen_prism_instance()
+
     if args.client:
+        print("done")
         return
 
     export_modlist()
     export_server_pack()
+    print("done")
 
 def refresh():
     subprocess.run([packwizName, 'refresh'], check=True)
@@ -124,6 +129,17 @@ def export_modlist():
         data += "</ul></body></html>"
         file.write(data)
     print("Modlist Export Done")
+
+def gen_prism_instance():
+    print('Generating PrismLauncher Instance')
+    instance_dir = './buildOut/instances'
+    if os.path.isdir(instance_dir):
+        print('Instance folder exist')
+        instance.newInstance(instance.nextInstanceNum())
+    else:
+        print('Initial Instance')
+        os.mkdir(instance_dir)
+        instance.newInstance(1)
 
 
 if __name__ == "__main__":

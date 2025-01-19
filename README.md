@@ -86,4 +86,7 @@ Special thanks to our volunteers:
 ## Building the pack
 1. Run `pip install requests` first to install required package.
 2. Run `python build/main.py`.
+> [!NOTE]  
+> Run `python build/main.py -i` or `python build/main.py --instance` to generate PrismLauncher instance for test  
+> `PrismLauncher -> Settings -> Launcher -> Features -> Folders -> Instance` can reset the instances folder
 3. Check `buildOut` folder.
