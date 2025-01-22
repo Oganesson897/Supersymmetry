@@ -11,14 +11,11 @@ def nextInstanceNum():
 
     if not folders:
         return 1
-    
-    pattern = re.compile(rf'^{re.escape('Test')}\s*(\d+)$')
         
     numbers = []
     for folder in folders:
-        match = pattern.match(folder)
-        if match:
-            numbers.append(int(match.group(1)))
+        if folder.startswith("Test"):
+            numbers.append(int(folder[-1]))
 
     return max(numbers) + 1
 
