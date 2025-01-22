@@ -8,16 +8,13 @@ instance_dir = './buildOut/instances'
 def nextInstanceNum():
     all_items = os.listdir(instance_dir)
     folders = [item for item in all_items if os.path.isdir(os.path.join(instance_dir, item))]
-
-    if not folders:
-        return 1
         
     numbers = []
     for folder in folders:
         if folder.startswith("Test"):
             numbers.append(int(folder[-1]))
 
-    return max(numbers) + 1
+    return max(numbers, default=0) + 1
 
 def createConfiguration(name: str):
     cfg = f'''
