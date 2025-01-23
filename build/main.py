@@ -70,10 +70,12 @@ def build(args):
         sys.exit(0)
 
     refresh()
-    export_client_pack() # Client
 
     if args.instance:
         gen_prism_instance()
+        return
+
+    export_client_pack() # Client
 
     if args.client:
         print("done")
