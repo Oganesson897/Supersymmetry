@@ -601,6 +601,7 @@ log.infoMC("Registered oxygenate pairs")
 def GasolineFeedstocks = [
     'naphtha' : 1,
     'light_naphtha' : 1,
+    'dehexanized_naphtha' : 1,
     'reformate' : 3,
     'reformate_raffinate' : 2.5,
     'polymerate' : 2,

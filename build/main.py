@@ -104,7 +104,7 @@ def export_server_pack():
     shutil.copy("LICENSE", "build/server/LICENSE")
 
     os.chdir("build/server")
-    subprocess.run(['java', '-jar', 'packwiz-installer-bootstrap.jar', '../../pack.toml'], check=True)
+    subprocess.run(['java', '-jar', 'packwiz-installer-bootstrap.jar', '-s', 'server', '../../pack.toml'], check=True)
 
     with zipfile.ZipFile(server_pack, 'w') as zipf:
         for folder in ['config', 'groovy', 'libraries', 'mods', 'structures']:

@@ -604,7 +604,11 @@ public class PetrochemistryMaterials {
                 .flags(FLAMMABLE)
                 .build();
 
-        // FREE ID: 20104
+        DehexanizedNaphtha = new Material.Builder(20104, SuSyUtility.susyId('dehexanized_naphtha'))
+                .liquid()
+                .color(0xfcfc0f)
+                .flags(FLAMMABLE)
+                .build();
 
         SulfuricCatalyticOverheads = new Material.Builder(20105, SuSyUtility.susyId('sulfuric_catalytic_overheads'))
                 .gas(new FluidBuilder().temperature(773))

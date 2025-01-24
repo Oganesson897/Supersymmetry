@@ -3882,3 +3882,42 @@ MIXER.recipeBuilder()
         .EUt(30)
         .duration(160)
         .buildAndRegister()
+
+// Liquid Ice * 144
+mods.gregtech.extractor.removeByInput(30, [item('minecraft:ice')], null)
+mods.gregtech.extractor.removeByInput(30, [metaitem('dustIce')], null)
+
+FLUID_EXTRACTOR.recipeBuilder()
+        .inputs(item('minecraft:ice'))
+        .fluidOutputs(fluid('ice') * 1000)
+        .duration(6)
+        .EUt(30)
+        .buildAndRegister()
+
+FLUID_EXTRACTOR.recipeBuilder()
+        .inputs(metaitem('dustIce'))
+        .fluidOutputs(fluid('ice') * 1000)
+        .duration(6)
+        .EUt(30)
+        .buildAndRegister()
+
+// Water * 144
+mods.gregtech.fluid_heater.removeByInput(4, [metaitem('circuit.integrated').withNbt(['Configuration': 1])], [fluid('ice') * 144])
+
+FLUID_HEATER.recipeBuilder()
+        .fluidInputs(fluid('ice') * 1000)
+        .fluidOutputs(fluid('water') * 1000)
+        .duration(220)
+        .EUt(4)
+        .buildAndRegister()
+
+// Ice * 1
+mods.gregtech.fluid_solidifier.removeByInput(7, [metaitem('shape.mold.block')], [fluid('ice') * 144])
+
+mods.gregtech.fluid_solidifier.recipeBuilder()
+        .fluidInputs(fluid('ice') * 1000)
+        .notConsumable(metaitem('shape.mold.block'))
+        .outputs(item('minecraft:ice'))
+        .duration(6)
+        .EUt(7)
+        .buildAndRegister()

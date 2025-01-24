@@ -137,6 +137,35 @@ PHASE_SEPARATOR = recipemap('phase_separator')
             .EUt(30)
             .buildAndRegister()
 
+        FBR.recipeBuilder()
+            .fluidInputs(fluid('deasphalted_oil') * 850)
+            .fluidInputs(fluid('hydrogen') * 315)
+            .notConsumable(metaitem('catalystBedPlatinumSapoEleven'))
+            .fluidOutputs(fluid('sulfuric_lubricating_oil') * 850)
+            .fluidOutputs(fluid('sour_gas') * 315)
+            .duration(20)
+            .EUt(30)
+            .buildAndRegister()
+
+        // Hydrofinishing
+
+        FBR.recipeBuilder()
+            .fluidInputs(fluid('sulfuric_lubricating_oil') * 850)
+            .fluidInputs(fluid('hydrogen') * 100)
+            .notConsumable(metaitem('catalystBedHydrotreatingCatalyst'))
+            .fluidOutputs(fluid('treated_sulfuric_lubricating_oil') * 850)
+            .duration(15)
+            .EUt(30)
+            .buildAndRegister()
+
+        DT.recipeBuilder()
+            .fluidInputs(fluid('treated_sulfuric_lubricating_oil') * 850)
+            .fluidOutputs(fluid('lubricating_oil') * 850)
+            .fluidOutputs(fluid('sour_gas') * 100)
+            .duration(50)
+            .EUt(30)
+            .buildAndRegister()
+
     // Silicone oil
 
     CSTR.recipeBuilder()

@@ -407,7 +407,7 @@ CHEMICAL_BATH.recipeBuilder()
 
 BR.recipeBuilder()
         .inputs(metaitem('raw_smd_capacitor') * 16)
-        .fluidInputs(fluid('polydimethylsiloxane') * 72)
+        .fluidInputs(fluid('polydimethylsiloxane') * 500)
         .outputs(metaitem('component.smd.capacitor') * 16)
         .duration(40)
         .EUt(240)
