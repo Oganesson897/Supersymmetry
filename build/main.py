@@ -14,12 +14,10 @@ import questbook
 import instance
 import download
 
-# used to map a projects classId on curseforge to a folder
-class_id_to_dir = {
-    6: "mods",
-    12: "resourcepacks",
-    -1: "other"
-}
+# put the modrinth mod's modname in this array
+modrinth_files = [
+    ""
+]
 
 
 def parse_args():
@@ -91,6 +89,18 @@ def refresh():
 def export_client_pack():
     print("Client Pack Exporting")
     subprocess.run([packwizName, 'curseforge', 'export', '-o', 'client.zip'], check=True)
+
+    def remove_folder_from_zip(zip_path, folder_name):
+        temp_zip_path = zip_path + "_temp"
+        with zipfile.ZipFile(zip_path, 'r') as zip_in:
+            with zipfile.ZipFile(temp_zip_path, 'w') as zip_out:
+                for entry in zip_in.infolist():
+                    if not entry.filename.startswith(folder_name + '/'):
+                        zip_out.writestr(entry, zip_in.read(entry.filename))
+        os.replace(temp_zip_path, zip_path)
+
+    remove_folder_from_zip("client.zip", "mods")
+
     shutil.copy('./client.zip', './buildOut/')
     os.remove('./client.zip')
     print("Client Pack Export Done")
@@ -123,10 +133,11 @@ def export_server_pack():
 
 def export_modlist():
     print("Modlist Exporting")
-    result = subprocess.run([packwizName, 'list'], capture_output=True, encoding='utf-8').stdout.strip().split('\n')
+    result = subprocess.run([packwizName, 'list', '-s', 'client'], capture_output=True, encoding='utf-8').stdout.strip().split('\n')
     with open(basePath + "/buildOut/modlist.html", "w") as file:
         data = "<html><body><h1>Modlist</h1><ul>"
         for mod in result:
+            if mod in modrinth_files: continue
             data += "<li>" + mod + "</li>"
         data += "</ul></body></html>"
         file.write(data)
